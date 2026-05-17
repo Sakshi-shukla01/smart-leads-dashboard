@@ -569,8 +569,8 @@ Then redeploy the backend so CORS accepts requests from your Vercel frontend.
 ## 👨‍💻 Author
 
 **Your Name**
-- GitHub: [@YOURUSERNAME](https://github.com/YOURUSERNAME)
-- Email: your@email.com
+- GitHub: [@Sakshi-shukla01]
+- Email: sakshishukla1008@gmail.com
 
 ---
 
