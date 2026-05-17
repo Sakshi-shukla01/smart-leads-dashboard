@@ -526,6 +526,4 @@ VITE_API_URL    → https://smart-leads-dashboard-y4ry.onrender.com/api
 
 ---
 
-## 📄 License
 
-Built as part of the MERN Full Stack Internship Assignment for **ServiceHive**.
