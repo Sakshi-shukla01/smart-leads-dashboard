@@ -8,11 +8,10 @@ A production-grade **Lead Management Dashboard** built with the MERN stack and T
 
 | | |
 |---|---|
-| **Live Demo** | https://smart-leads-dashboard.vercel.app |
-| **Backend API** | https://smart-leads-backend.onrender.com |
-| **GitHub** | https://github.com/YOURUSERNAME/smart-leads-dashboard |
-
-> Replace the links above with your actual deployment URLs.
+| **Live Demo** | https://smart-leads-dashboard-three.vercel.app |
+| **Backend API** | https://smart-leads-dashboard-y4ry.onrender.com/api |
+| **Health Check** | https://smart-leads-dashboard-y4ry.onrender.com/health |
+| **GitHub** | https://github.com/Sakshi-shukla01/smart-leads-dashboard |
 
 ---
 
@@ -77,6 +76,7 @@ A production-grade **Lead Management Dashboard** built with the MERN stack and T
 | Docker + Docker Compose | Containerization |
 | Render | Backend deployment |
 | Vercel | Frontend deployment |
+| MongoDB Atlas | Cloud database |
 
 ---
 
@@ -108,7 +108,7 @@ smart-leads-dashboard/
 │   │   │   ├── apiResponse.ts           # Consistent response helpers
 │   │   │   └── csvExport.ts             # CSV generator
 │   │   └── app.ts                       # Express app entry point
-│   ├── .env.example                     # Env template
+│   ├── .env.example
 │   ├── Dockerfile
 │   ├── package.json
 │   └── tsconfig.json
@@ -168,8 +168,6 @@ smart-leads-dashboard/
 
 ### Prerequisites
 
-Make sure you have these installed:
-
 - [Node.js v18+](https://nodejs.org)
 - [Git](https://git-scm.com)
 - [MongoDB Atlas account](https://cloud.mongodb.com) — free tier works
@@ -179,7 +177,7 @@ Make sure you have these installed:
 ### Step 1 — Clone the Repository
 
 ```bash
-git clone https://github.com/YOURUSERNAME/smart-leads-dashboard.git
+git clone https://github.com/Sakshi-shukla01/smart-leads-dashboard.git
 cd smart-leads-dashboard
 ```
 
@@ -192,7 +190,7 @@ cd smart-leads-dashboard
 3. Click **Connect** → **Drivers** → copy the connection string
 4. Go to **Network Access** → Add IP → **Allow Access from Anywhere** (`0.0.0.0/0`)
 
-Your connection string looks like:
+Connection string format:
 ```
 mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/smart_leads?retryWrites=true&w=majority
 ```
@@ -206,7 +204,7 @@ cd backend
 cp .env.example .env
 ```
 
-Open `.env` and fill in:
+Fill in `.env`:
 ```env
 NODE_ENV=development
 PORT=5000
@@ -216,13 +214,13 @@ JWT_EXPIRES_IN=7d
 CLIENT_URL=http://localhost:5173
 ```
 
-Then run:
+Run:
 ```bash
 npm install
 npm run dev
 ```
 
-Expected output:
+Expected:
 ```
 ✅ MongoDB Atlas connected successfully
 🚀 Server running on port 5000
@@ -232,24 +230,24 @@ Expected output:
 
 ### Step 4 — Setup Frontend
 
-Open a **new terminal**:
+Open a new terminal:
 
 ```bash
 cd frontend
 ```
 
 Create `.env`:
-```bash
-echo "VITE_API_URL=http://localhost:5000/api" > .env
+```env
+VITE_API_URL=http://localhost:5000/api
 ```
 
-Then run:
+Run:
 ```bash
 npm install
 npm run dev
 ```
 
-Expected output:
+Expected:
 ```
 VITE v8.x  ready in 300ms
 ➜  Local: http://localhost:5173/
@@ -259,28 +257,23 @@ VITE v8.x  ready in 300ms
 
 ### Step 5 — Open Browser
 
-Go to 👉 **[http://localhost:5173](http://localhost:5173)**
-
-Register an admin account and a sales account to test all features.
+👉 **[http://localhost:5173](http://localhost:5173)**
 
 ---
 
 ## 🐳 Docker Setup
 
-Requires [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed.
-
 ```bash
-# Copy env file and fill in your values
 cp .env.example .env
+# Fill in your values in .env
 
-# Start everything — MongoDB + Backend + Frontend
 docker-compose up --build
 ```
 
 App runs at 👉 **[http://localhost:80](http://localhost:80)**
 
 ```bash
-# Stop everything
+# Stop
 docker-compose down
 ```
 
@@ -290,6 +283,11 @@ docker-compose down
 
 ### Base URL
 ```
+https://smart-leads-dashboard-y4ry.onrender.com/api
+```
+
+Local:
+```
 http://localhost:5000/api
 ```
 
@@ -297,11 +295,11 @@ http://localhost:5000/api
 
 ### Auth Endpoints
 
-| Method | Endpoint | Auth Required | Description |
-|--------|----------|--------------|-------------|
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
 | POST | `/auth/register` | ❌ | Register new user |
 | POST | `/auth/login` | ❌ | Login and get token |
-| GET | `/auth/me` | ✅ | Get current user info |
+| GET | `/auth/me` | ✅ | Get current user |
 
 ---
 
@@ -352,7 +350,7 @@ http://localhost:5000/api
 
 ### Lead Endpoints
 
-All lead endpoints require header:
+All endpoints require:
 ```
 Authorization: Bearer <your_jwt_token>
 ```
@@ -360,9 +358,9 @@ Authorization: Bearer <your_jwt_token>
 | Method | Endpoint | Role | Description |
 |--------|----------|------|-------------|
 | GET | `/leads` | All | Get paginated leads |
-| GET | `/leads/export/csv` | All | Download leads as CSV |
+| GET | `/leads/export/csv` | All | Download as CSV |
 | GET | `/leads/:id` | All | Get single lead |
-| POST | `/leads` | All | Create new lead |
+| POST | `/leads` | All | Create lead |
 | PATCH | `/leads/:id` | Owner / Admin | Update lead |
 | DELETE | `/leads/:id` | Admin only | Delete lead |
 
@@ -376,15 +374,15 @@ Authorization: Bearer <your_jwt_token>
 | `limit` | number | `10` | Records per page |
 | `status` | string | — | `New` `Contacted` `Qualified` `Lost` |
 | `source` | string | — | `Website` `Instagram` `Referral` |
-| `search` | string | — | Search by name or email |
+| `search` | string | — | Search name or email |
 | `sort` | string | `latest` | `latest` or `oldest` |
 
-**Example with multiple filters:**
+**Example:**
 ```
-GET /api/leads?status=Qualified&source=Instagram&search=Rahul&page=1&sort=latest
+GET /api/leads?status=Qualified&source=Instagram&search=Rahul&page=1
 ```
 
-**Success Response `200`:**
+**Response:**
 ```json
 {
   "success": true,
@@ -417,34 +415,8 @@ GET /api/leads?status=Qualified&source=Instagram&search=Rahul&page=1&sort=latest
 
 ---
 
-#### POST `/leads`
-
-**Request Body:**
-```json
-{
-  "name": "Jane Smith",
-  "email": "jane@example.com",
-  "status": "New",
-  "source": "Website"
-}
-```
-
----
-
-#### PATCH `/leads/:id`
-
-**Request Body** (partial update — any field):
-```json
-{
-  "status": "Qualified"
-}
-```
-
----
-
 ### Error Response Format
 
-All errors follow this consistent format:
 ```json
 {
   "success": false,
@@ -458,13 +430,13 @@ All errors follow this consistent format:
 | Code | Meaning |
 |------|---------|
 | `200` | Success |
-| `201` | Created successfully |
+| `201` | Created |
 | `400` | Validation error |
-| `401` | Not authenticated — invalid or missing token |
-| `403` | Not authorized — insufficient permissions |
-| `404` | Resource not found |
-| `409` | Conflict — duplicate email |
-| `500` | Internal server error |
+| `401` | Not authenticated |
+| `403` | Not authorized |
+| `404` | Not found |
+| `409` | Duplicate entry |
+| `500` | Server error |
 
 ---
 
@@ -476,15 +448,14 @@ All errors follow this consistent format:
 | View leads | Own leads only | All leads |
 | Create lead | ✅ | ✅ |
 | Edit lead | Own leads only | Any lead |
-| Delete lead | ❌ Not allowed | ✅ |
+| Delete lead | ❌ | ✅ |
 | Export CSV | Own leads only | All leads |
 
 ---
 
-## 🔑 Environment Variables Reference
+## 🔑 Environment Variables
 
 ### `backend/.env`
-
 ```env
 NODE_ENV=development
 PORT=5000
@@ -495,81 +466,62 @@ CLIENT_URL=http://localhost:5173
 ```
 
 ### `frontend/.env`
-
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
 
 ---
 
-## 📦 Scripts Reference
+## 📦 Scripts
 
 ### Backend
 ```bash
-npm run dev      # Development server with hot reload
-npm run build    # Compile TypeScript → JavaScript
-npm start        # Run compiled production build
+npm run dev      # Development with hot reload
+npm run build    # Compile TypeScript
+npm start        # Run production build
 ```
 
 ### Frontend
 ```bash
-npm run dev      # Vite development server
+npm run dev      # Vite dev server
 npm run build    # Production build
-npm run preview  # Preview production build locally
+npm run preview  # Preview production locally
 ```
 
 ---
 
-## 🚢 Deployment Guide
+## 🚢 Deployment
 
-### Backend on Render (Free)
+| Service | Platform | URL |
+|---------|----------|-----|
+| Frontend | Vercel | https://smart-leads-dashboard-three.vercel.app |
+| Backend | Render | https://smart-leads-dashboard-y4ry.onrender.com |
+| Database | MongoDB Atlas | Cloud hosted |
 
-1. Go to [render.com](https://render.com) → Sign up with GitHub
-2. **New** → **Web Service** → Connect your repo
-3. Configure:
-   ```
-   Root Directory  → backend
-   Build Command   → npm install && npm run build
-   Start Command   → npm start
-   ```
-4. Add all environment variables from `backend/.env`
-5. Deploy — you get a URL like `https://smart-leads-backend.onrender.com`
-
----
-
-### Frontend on Vercel (Free)
-
-1. Go to [vercel.com](https://vercel.com) → Sign up with GitHub
-2. **New Project** → Import your repo
-3. Configure:
-   ```
-   Root Directory  → frontend
-   Build Command   → npm run build
-   Output Dir      → dist
-   ```
-4. Add environment variable:
-   ```
-   VITE_API_URL = https://smart-leads-backend.onrender.com/api
-   ```
-5. Deploy — you get a URL like `https://smart-leads-dashboard.vercel.app`
-
----
-
-### After Deploying Both
-
-Update your Render backend environment variable:
+### Backend — Render
 ```
-CLIENT_URL = https://smart-leads-dashboard.vercel.app
+Root Directory  → backend
+Build Command   → npm install && npm run build
+Start Command   → node dist/app.js
 ```
 
-Then redeploy the backend so CORS accepts requests from your Vercel frontend.
+### Frontend — Vercel
+```
+Root Directory  → frontend
+Build Command   → npm run build
+Output Dir      → dist
+VITE_API_URL    → https://smart-leads-dashboard-y4ry.onrender.com/api
+```
+
+> ⚠️ Free tier on Render sleeps after 15 minutes of inactivity.
+> First request may take 30–60 seconds to wake up. This is normal.
 
 ---
 
-## 👨‍💻 Author
+## 👩‍💻 Author
 
-**Your Name**
-- GitHub: [@Sakshi-shukla01]
+**Sakshi Shukla**
+- GitHub: [@Sakshi-shukla01](https://github.com/Sakshi-shukla01)
 - Email: sakshishukla1008@gmail.com
 
 ---
